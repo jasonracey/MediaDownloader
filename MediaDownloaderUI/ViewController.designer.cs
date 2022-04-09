@@ -29,22 +29,13 @@ namespace MediaDownloaderUI
 		AppKit.NSButton ButtonDownloadPlaylist { get; set; }
 
 		[Outlet]
-		AppKit.NSTableColumn ColumnBandcampDownloadStatus { get; set; }
+		AppKit.NSTableColumn ColumnDownloadStatus { get; set; }
 
 		[Outlet]
-		AppKit.NSTableColumn ColumnBandcampTitle { get; set; }
+		AppKit.NSTableColumn ColumnTitle { get; set; }
 
 		[Outlet]
-		AppKit.NSTableColumn ColumnBandcampTrackNumber { get; set; }
-
-		[Outlet]
-		AppKit.NSTableColumn ColumnPlaylistDownloadStatus { get; set; }
-
-		[Outlet]
-		AppKit.NSTableColumn ColumnPlaylistTitle { get; set; }
-
-		[Outlet]
-		AppKit.NSTableColumn ColumnPlaylistTrackNumber { get; set; }
+		AppKit.NSTableColumn ColumnTrackNumber { get; set; }
 
 		[Outlet]
 		AppKit.NSProgressIndicator Progress { get; set; }
@@ -53,22 +44,13 @@ namespace MediaDownloaderUI
 		AppKit.NSTextField Status { get; set; }
 
 		[Outlet]
-		AppKit.NSTableView TableBandcamp { get; set; }
-
-		[Outlet]
-		AppKit.NSTableView TablePlaylist { get; set; }
-
-		[Outlet]
-		AppKit.NSTextField TextPlaylist { get; set; }
+		AppKit.NSTableView TableTracks { get; set; }
 
 		[Outlet]
 		AppKit.NSTextField TextUrl { get; set; }
 
 		[Action ("AddPlaylistClicked:")]
 		partial void AddPlaylistClicked (AppKit.NSButton sender);
-
-		[Action ("AddPlaylistClicked:")]
-		partial void AddPlaylistClicked (Foundation.NSObject sender);
 
 		[Action ("ClearBandcampClicked:")]
 		partial void ClearBandcampClicked (AppKit.NSButton sender);
@@ -109,21 +91,6 @@ namespace MediaDownloaderUI
 				ButtonDownloadPlaylist = null;
 			}
 
-			if (ColumnBandcampTrackNumber != null) {
-				ColumnBandcampTrackNumber.Dispose ();
-				ColumnBandcampTrackNumber = null;
-			}
-
-			if (ColumnBandcampTitle != null) {
-				ColumnBandcampTitle.Dispose ();
-				ColumnBandcampTitle = null;
-			}
-
-			if (ColumnBandcampDownloadStatus != null) {
-				ColumnBandcampDownloadStatus.Dispose ();
-				ColumnBandcampDownloadStatus = null;
-			}
-
 			if (Progress != null) {
 				Progress.Dispose ();
 				Progress = null;
@@ -134,39 +101,29 @@ namespace MediaDownloaderUI
 				Status = null;
 			}
 
-			if (TableBandcamp != null) {
-				TableBandcamp.Dispose ();
-				TableBandcamp = null;
-			}
-
-			if (TablePlaylist != null) {
-				TablePlaylist.Dispose ();
-				TablePlaylist = null;
-			}
-
-			if (ColumnPlaylistTrackNumber != null) {
-				ColumnPlaylistTrackNumber.Dispose ();
-				ColumnPlaylistTrackNumber = null;
-			}
-
-			if (ColumnPlaylistTitle != null) {
-				ColumnPlaylistTitle.Dispose ();
-				ColumnPlaylistTitle = null;
-			}
-
-			if (ColumnPlaylistDownloadStatus != null) {
-				ColumnPlaylistDownloadStatus.Dispose ();
-				ColumnPlaylistDownloadStatus = null;
-			}
-
-			if (TextPlaylist != null) {
-				TextPlaylist.Dispose ();
-				TextPlaylist = null;
-			}
-
 			if (TextUrl != null) {
 				TextUrl.Dispose ();
 				TextUrl = null;
+			}
+
+			if (TableTracks != null) {
+				TableTracks.Dispose ();
+				TableTracks = null;
+			}
+
+			if (ColumnTrackNumber != null) {
+				ColumnTrackNumber.Dispose ();
+				ColumnTrackNumber = null;
+			}
+
+			if (ColumnTitle != null) {
+				ColumnTitle.Dispose ();
+				ColumnTitle = null;
+			}
+
+			if (ColumnDownloadStatus != null) {
+				ColumnDownloadStatus.Dispose ();
+				ColumnDownloadStatus = null;
 			}
 
 		}

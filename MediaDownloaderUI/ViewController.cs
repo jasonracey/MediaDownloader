@@ -46,7 +46,6 @@ namespace MediaDownloaderUI
         private IProcessingStatusReporter _processingStatusReporter;
         private NSTimer _timer;
         private IEnumerable<Track> _tracks;
-        private NSTableView _tracksTable;
         
         public ViewController(IntPtr handle) : base(handle)
         {
@@ -76,16 +75,12 @@ namespace MediaDownloaderUI
         async partial void DownloadBandcampClicked(NSButton sender)
         {
             _processingStatusReporter = BandcampDownloader;
-            _tracksTable = TableBandcamp;
-
             await ExecuteDownloadTaskAsync(BandcampDownloader.DownloadTracksAsync(new Uri(TextUrl.StringValue)));
         }
         
         async partial void DownloadPlaylistClicked(NSButton sender)
         {
             _processingStatusReporter = PlaylistDownloader;
-            _tracksTable = TablePlaylist;
-            
             await ExecuteDownloadTaskAsync(PlaylistDownloader.DownloadFilesAsync(_tracks));
         }
 
@@ -128,7 +123,6 @@ namespace MediaDownloaderUI
                 uri,
                 trackNumber));
 
-            _tracksTable = TablePlaylist;
             LoadTrackTableView(_tracks);
 
             SetPlaylistAddedState();
@@ -204,15 +198,16 @@ namespace MediaDownloaderUI
 
         private void SetIdleState()
         {
+            // track table
+            TableTracks.DataSource = new TrackDataSource();
+
             // bandcamp downloader
             TextUrl.Editable = true;
             TextUrl.StringValue = string.Empty;
-            TableBandcamp.DataSource = new TrackDataSource();
             ButtonClearBandcamp.Enabled = false;
             ButtonDownloadBandcamp.Enabled = false;
             
             // playlist downloader
-            TablePlaylist.DataSource = new TrackDataSource();
             ButtonClearPlaylist.Enabled = false;
             ButtonDownloadPlaylist.Enabled = false;
             ButtonAddPlaylist.Enabled = true;
@@ -259,8 +254,8 @@ namespace MediaDownloaderUI
                     track.TrackDownloadStatus);
                 dataSource.Tracks.Add(trackModel);
             }
-            _tracksTable.DataSource = dataSource;
-            _tracksTable.Delegate = new TrackTableDelegate(dataSource);
+            TableTracks.DataSource = dataSource;
+            TableTracks.Delegate = new TrackTableDelegate(dataSource);
         }
 
         private void StopTimer()
