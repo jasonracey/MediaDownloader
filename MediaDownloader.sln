@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaDownloaderLib", "MediaDownloaderLib\MediaDownloaderLib.csproj", "{F3792BCE-0334-4D40-A0C3-9F491F2849E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaDownloaderLib.SmokeTest", "MediaDownloaderLib.SmokeTest\MediaDownloaderLib.SmokeTest.csproj", "{113C8B06-6755-418F-B508-9024121CE78F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaDownloaderLib.UnitTest", "MediaDownloaderLib.UnitTest\MediaDownloaderLib.UnitTest.csproj", "{43AAB570-C9F1-4B73-AE0E-1D12A7F27F55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaDownloaderUI", "MediaDownloaderUI\MediaDownloaderUI.csproj", "{09093A28-5169-4FD2-8798-3997161D447F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3792BCE-0334-4D40-A0C3-9F491F2849E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3792BCE-0334-4D40-A0C3-9F491F2849E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3792BCE-0334-4D40-A0C3-9F491F2849E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3792BCE-0334-4D40-A0C3-9F491F2849E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113C8B06-6755-418F-B508-9024121CE78F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113C8B06-6755-418F-B508-9024121CE78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113C8B06-6755-418F-B508-9024121CE78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113C8B06-6755-418F-B508-9024121CE78F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43AAB570-C9F1-4B73-AE0E-1D12A7F27F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43AAB570-C9F1-4B73-AE0E-1D12A7F27F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43AAB570-C9F1-4B73-AE0E-1D12A7F27F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43AAB570-C9F1-4B73-AE0E-1D12A7F27F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09093A28-5169-4FD2-8798-3997161D447F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{09093A28-5169-4FD2-8798-3997161D447F}.Debug|Any CPU.Build.0 = Debug|x86
+		{09093A28-5169-4FD2-8798-3997161D447F}.Release|Any CPU.ActiveCfg = Release|x86
+		{09093A28-5169-4FD2-8798-3997161D447F}.Release|Any CPU.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
