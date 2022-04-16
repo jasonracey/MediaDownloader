@@ -20,5 +20,10 @@ namespace MediaDownloaderUI
         {
             // Insert code here to tear down your application
         }
+        
+        public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)
+        {
+            return true;
+        }
     }
 }
