@@ -29,22 +29,31 @@ namespace MediaDownloaderLib.UnitTest
             Assert.IsNotNull(artist);
             Assert.AreEqual(mockArtist, artist);
         }
-
-        [TestCase("<html>wrong page</html>")]
-        [TestCase("<html><title>Album</html>")]
-        [TestCase("<html><title>Album</title></html>")]
-        [TestCase("<html><title>Album | </title></html>")]
-        [TestCase("<html><title> | Artist</title></html>")]
-        [TestCase("<html><title>Album - Artist</title></html>")]
-        public void GetAlbumAndArtist_CannotGetAlbumAndArtist_Throws(string albumPage)
+        
+        [TestCase("<html></html>")]
+        [TestCase("<html><title></title></html>")]
+        public void GetAlbumAndArtist_CannotGetAlbum_ReturnsUnknown(string albumPage)
         {
             // act
-            var thrown =
-                Assert.Throws<DownloaderException>(() => AlbumAndArtistParser.GetAlbumAndArtist(albumPage));
+            var result = AlbumAndArtistParser.GetAlbumAndArtist(albumPage);
 
             // assert
-            Assert.IsNotNull(thrown);
-            Assert.AreEqual(ExceptionReason.CouldNotParseAlbumAndArtist, thrown?.Message);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Unknown", result.Album);
+        }
+
+        [TestCase("<html></html>")]
+        [TestCase("<html><title></title></html>")]
+        [TestCase("<html><title>Album</title></html>")]
+        [TestCase("<html><title>Album | </title></html>")]
+        public void GetAlbumAndArtist_CannotGetArtist_ReturnsUnknown(string albumPage)
+        {
+            // act
+            var result = AlbumAndArtistParser.GetAlbumAndArtist(albumPage);
+
+            // assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Unknown", result.Artist);
         }
     }
 }

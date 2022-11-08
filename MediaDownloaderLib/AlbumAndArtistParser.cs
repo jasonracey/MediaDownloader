@@ -5,6 +5,8 @@ namespace MediaDownloaderLib
 {
     public static class AlbumAndArtistParser
     {
+        private const string Unknown = "Unknown";
+        
         public static (string Album, string Artist) GetAlbumAndArtist(string albumPage)
         {
             if (string.IsNullOrWhiteSpace(albumPage))
@@ -15,12 +17,15 @@ namespace MediaDownloaderLib
                 .Split("</title>").FirstOrDefault()?
                 .Split(" | ") ?? Array.Empty<string>();
 
-            if (items.Length <= 1 || string.IsNullOrWhiteSpace(items[0]) || string.IsNullOrWhiteSpace(items[1]))
-            {
-                throw new DownloaderException(ExceptionReason.CouldNotParseAlbumAndArtist);
-            }
-        
-            return (items[0], items[1]);
+            var album = items.FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(album))
+                album = Unknown;
+
+            var artist = items.Skip(1).FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(artist))
+                artist = Unknown;
+            
+            return (album, artist);
         }
     }
 }
