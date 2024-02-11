@@ -57,10 +57,10 @@ namespace MediaDownloaderLib
                 .Split("track_num&quot;:").Skip(1).FirstOrDefault()?
                 .Split(",&quot;").FirstOrDefault() ?? string.Empty;
 
-            if (!int.TryParse(trackNumberString, out int trackNumber))
-                throw new DownloaderException(ExceptionReason.CouldNotParseTrackNumber);
-
-            return trackNumber;
+            // When it's a single track, Bandcamp uses the string "null".
+            return trackNumberString == "null"
+                ? 1
+                : TryParseTrackNumber(trackNumberString);
         }
 
         public static Uri GetTrackUri(string trackString, string streamBaseUrl)
@@ -78,6 +78,14 @@ namespace MediaDownloaderLib
                 throw new DownloaderException(ExceptionReason.CouldNotParseTrackUrl);
             
             return new Uri($"{streamBaseUrl}{trackUrl}");
+        }
+        
+        private static int TryParseTrackNumber(string trackNumberString)
+        {
+            if (!int.TryParse(trackNumberString, out var trackNumber))
+                throw new DownloaderException(ExceptionReason.CouldNotParseTrackNumber);
+            
+            return trackNumber;
         }
     }
 }

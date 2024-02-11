@@ -12,14 +12,20 @@ namespace MediaDownloaderLib.SmokeTest
             new ResourceService(),
             new TrackTagger());
         
-        private static readonly Uri AlbumUri = new("https://planetcruiser.bandcamp.com/album/riders-of-the-edge");
         private static readonly string UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        private static readonly string DestinationPath = $"{UserProfile}/Downloads/Planet Cruiser - Riders Of The Edge";
+        
+        private static readonly Uri AlbumUri = new("https://planetcruiser.bandcamp.com/album/riders-of-the-edge");
+        private static readonly string AlbumDestinationPath = $"{UserProfile}/Downloads/Planet Cruiser - Riders Of The Edge";
 
+        private static readonly Uri TrackUri = new("https://planetcruiser.bandcamp.com/track/hollow-dancer");
+        private static readonly string TrackDestinationPath = $"{UserProfile}/Downloads/Planet Cruiser - Hollow Dancer";
+        
         private static void RemoveTestDirectory()
         {
-            if (Directory.Exists(DestinationPath))
-                Directory.Delete(DestinationPath, recursive: true);
+            if (Directory.Exists(AlbumDestinationPath))
+                Directory.Delete(AlbumDestinationPath, recursive: true);
+            if (Directory.Exists(TrackDestinationPath))
+                Directory.Delete(TrackDestinationPath, recursive: true);
         }
         
         [SetUp]
@@ -34,28 +40,52 @@ namespace MediaDownloaderLib.SmokeTest
             RemoveTestDirectory();
         }
 
-        private static readonly List<string> TrackNames = new()
-        {
-            "Emperor's Curse",
-            "The Moon Mountain",
-            "The Windmill Grave",
-            "Sleeping Giants",
-            "Broken Sail"
-        };
-
         [Test]
-        public async Task CanDownloadTracksAsync()
+        public async Task CanDownloadAlbumAsync()
         {
+            // arrange
+            string[] trackNames = 
+            {
+                "Emperor's Curse",
+                "The Moon Mountain",
+                "The Windmill Grave",
+                "Sleeping Giants",
+                "Broken Sail"
+            };
+            
             // act
             await _downloader.DownloadTracksAsync(AlbumUri);
             
             // assert
-            Assert.IsTrue(Directory.Exists(DestinationPath));
+            AssertTracks(AlbumDestinationPath, trackNames);
+        }
+        
+        [Test]
+        public async Task CanDownloadTrackAsync()
+        {
+            // arrange
+            string[] trackNames = 
+            {
+                "Hollow Dancer"
+            };
+            
+            // act
+            await _downloader.DownloadTracksAsync(TrackUri);
+            
+            // assert
+            AssertTracks(TrackDestinationPath, trackNames);
+        }
+
+        private static void AssertTracks(
+            string destinationPath,
+            IReadOnlyCollection<string> trackNames)
+        {
+            Assert.IsTrue(Directory.Exists(destinationPath));
 
             var trackNumber = 0;
-            foreach (var trackName in TrackNames)
+            foreach (var trackName in trackNames)
             {
-                var filePath = $"{DestinationPath}/0{++trackNumber} {trackName}.mp3";
+                var filePath = $"{destinationPath}/0{++trackNumber} {trackName}.mp3";
                 Assert.IsTrue(File.Exists(filePath));
                 
                 var file = TagLib.File.Create(filePath);
@@ -68,8 +98,8 @@ namespace MediaDownloaderLib.SmokeTest
                 Assert.AreEqual(new []{"Planet Cruiser"}, file.Tag.Performers);
                 Assert.AreEqual(trackName, file.Tag.Title);
                 Assert.AreEqual(trackNumber, file.Tag.Track);
-                Assert.AreEqual(5, file.Tag.TrackCount);
-            }
+                Assert.AreEqual(trackNames.Count, file.Tag.TrackCount);
+            }   
         }
     }
 }
