@@ -7,6 +7,7 @@ using AppKit;
 using Foundation;
 using MediaDownloaderLib;
 using MediaDownloaderUI.Data;
+using UniformTypeIdentifiers;
 
 namespace MediaDownloaderUI
 {
@@ -14,24 +15,26 @@ namespace MediaDownloaderUI
     {
         private const int OpenFile = 1;
         
-        private static readonly string[] PlaylistFileTypes = { "m3u" };
-        
         private static readonly string DownloadsPath = Path.Combine(
             Environment.SpecialFolder.UserProfile.ToString(), 
             "Downloads");
         
-        private static readonly NSOpenPanel FileOpenPanel = new NSOpenPanel
+        private static readonly NSOpenPanel FileOpenPanel = CreateFileOpenPanel();
+
+        private static NSOpenPanel CreateFileOpenPanel()
         {
-            AllowedFileTypes = PlaylistFileTypes,
-            AllowsMultipleSelection = false,
-            CanChooseDirectories = false,
-            CanChooseFiles = true,
-            CanCreateDirectories = false,
-            Directory = DownloadsPath,
-            ReleasedWhenClosed = false,
-            ShowsHiddenFiles = false,
-            ShowsResizeIndicator = true
-        };
+            var panel = NSOpenPanel.OpenPanel;
+            var playlistContentType = UTType.CreateFromExtension("m3u")
+                ?? throw new InvalidOperationException("The system does not recognize the M3U playlist file type.");
+            panel.AllowedContentTypes = new[] { playlistContentType };
+            panel.AllowsMultipleSelection = false;
+            panel.CanChooseDirectories = false;
+            panel.CanChooseFiles = true;
+            panel.CanCreateDirectories = false;
+            panel.DirectoryUrl = NSUrl.FromFilename(DownloadsPath);
+            panel.ShowsHiddenFiles = false;
+            return panel;
+        }
         
         private static readonly BandcampDownloader BandcampDownloader = new BandcampDownloader(
             new ResourceService(),
@@ -43,9 +46,9 @@ namespace MediaDownloaderUI
                 new FileWrapper()), 
             new HttpClientWrapper());
 
-        private IProcessingStatusReporter _processingStatusReporter;
-        private NSTimer _timer;
-        private IEnumerable<Track> _tracks;
+        private IProcessingStatusReporter? _processingStatusReporter;
+        private NSTimer? _timer;
+        private IEnumerable<Track> _tracks = Enumerable.Empty<Track>();
         
         public ViewController(IntPtr handle) : base(handle)
         {
@@ -109,8 +112,10 @@ namespace MediaDownloaderUI
             var result = FileOpenPanel.RunModal();
             if (result != OpenFile) return;
 
+            if (FileOpenPanel.Url?.Path is not { } path) return;
+
             var validUris = new List<Uri>();
-            foreach (var line in File.ReadAllLines(FileOpenPanel.Url.Path))
+            foreach (var line in File.ReadAllLines(path))
             {
                 if (Uri.TryCreate(line, UriKind.Absolute, out var uri))
                 {

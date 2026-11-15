@@ -1,4 +1,3 @@
-using System;
 using MediaDownloaderLib;
 
 namespace MediaDownloaderUI.Data
@@ -19,7 +18,7 @@ namespace MediaDownloaderUI.Data
             Number = number;
             Count = count;
             Title = title;
-            TrackDownloadStatus = Enum.GetName(typeof(TrackDownloadStatus), trackDownloadStatus);
+            TrackDownloadStatus = trackDownloadStatus.ToString();
         }
     }
 }
